@@ -8,7 +8,6 @@ from inline_markdown import (
     split_nodes_link,
     markdown_to_blocks,
     block_to_block_type,
-    markdown_to_html_node
 )
 
 from textnode import TextNode, TextType
@@ -360,46 +359,6 @@ class TestInlineMarkdown(unittest.TestCase):
         para = "This is a paragraph of text. It has some **bold** and *italic* words inside of it."
         expected = "paragraph"
         self.assertEqual(block_to_block_type(para), expected)
-        
-    
-    def test_markdown_to_html_node(self):
-        markdown = """# Heading 1
-        This is a **bold** paragraph with an *italic* word and a `code` snippet.
-        ## Heading 2
-        > This is a blockquote.
-        * Item 1
-        * Item 2
-        
-        1. Ordered Item 1
-        2. Ordered Item 2"""
-
-        expected_html_node = ParentNode("div", [
-            ParentNode("h1", [LeafNode(None, "Heading 1")]),
-            ParentNode("p", [
-                LeafNode(None, "This is a "),
-                LeafNode("b", "bold"),
-                LeafNode(None, " paragraph with an "),
-                LeafNode("i", "italic"),
-                LeafNode(None, " word and a "),
-                LeafNode("code", "code"),
-                LeafNode(None, " snippet."),
-            ]),
-            ParentNode("h2", [LeafNode(None, "Heading 2")]),
-            ParentNode("blockquote", [LeafNode(None, "This is a blockquote.")]),
-            ParentNode("pre", [ParentNode("code", [LeafNode(None, "This is a code block.")])]),
-            ParentNode("ul", [
-                ParentNode("li", [LeafNode(None, "Item 1")]),
-                ParentNode("li", [LeafNode(None, "Item 2")]),
-            ]),
-            ParentNode("ol", [
-                ParentNode("li", [LeafNode(None, "Ordered Item 1")]),
-                ParentNode("li", [LeafNode(None, "Ordered Item 2")]),
-            ]),
-        ])
-
-        result = markdown_to_html_node(markdown)
-        print(result)
-        # self.assertEqual(result.to_html(), expected_html_node.to_html())
     
 
 if __name__ == "__main__":
